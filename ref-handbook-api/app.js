@@ -3,17 +3,35 @@ const express = require("express")
 const cors = require("cors")
 const morgan = require("morgan")
 
+//import errors
+const { BadRequestError, NotFoundError } = require("./utils/errors")
+
 const app = express()
 
 //middleware
-app.use(cors())
-app.use(express.json())
-app.use(morgan("tiny"))
+app.use(cors()) //enable cross origin sharing
+app.use(express.json()) //parse incoming request bodies with JSON payloads
+app.use(morgan("tiny")) // Log request info
 
 
 // health check 
 app.get("/", function(req, res) {
     return res.status(200).json({ping: "pong"})
 })
+
+//Url directory is not found
+app.use((req, res, next) => {
+    return next(new NotFoundError())
+})
+
+app.use((err, req, res, next) => {
+    const status = err.status || 500
+    const message = err.message
+
+    return res.status(status).json({
+        error: {message, status}
+    })
+})
+
 
 module.exports = app
