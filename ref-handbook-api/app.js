@@ -19,7 +19,8 @@ app.get("/", function(req, res) {
     return res.status(200).json({ping: "pong"})
 })
 
-//Url directory is not found
+//Displays error message when URL directory is not found
+//EX : http://localhost:3001/not-a-route
 app.use((req, res, next) => {
     return next(new NotFoundError())
 })
