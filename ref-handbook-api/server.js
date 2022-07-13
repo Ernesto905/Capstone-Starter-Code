@@ -1,7 +1,9 @@
 const app = require("./app")
+const { PORT } = require("./config")
+
+//pretty colors
 require("colors")
-// const { PORT } = require("./config")
-const PORT = 3001
+
 
 
 
